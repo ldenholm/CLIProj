@@ -14,17 +14,13 @@
             console.log(`${command} executed.`);
             // check file contains a To-Do:
             fs.readFile(path, function(err, content) {
-                if (err) throw err;
-
-                console.log(content.indexOf(td) >-1 ? 'has a to-do' : 'does not have a to-do');
+                if (err) {
+                    throw err;
+                } else if (content.includes(td)) {
+                    console.log('Display to-dos: ');
+                    // command to display text.
+                } else console.log('No to-do\'s to display');
             });
-            
-            
-            // fs.lstat(path, (err, stats) => {
-            //     if (err) {
-            //         return console.log(err);
-            //     } else console.log(`file exists? ${stats.isFile()}`);
-            // });
             break;
         case 'add':
             // adds a to-do item, all words behind add are entered as 1 item, for example:
