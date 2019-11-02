@@ -2,9 +2,8 @@
     const fs = require('fs');
 
     let command = process.argv[2];
-    let path = __dirname + '/to-do-list.txt';
-    let td = [];
-    //let reader = fs.createReadStream(path);
+    let path = __dirname + '/to-do-.json';
+    //console.log(td);
 
     switch (command) {
         case 'help':
@@ -17,28 +16,19 @@
             reset <clears the to-do-list.txt>`);
             break;
         case 'list':
-            // shows to-dos, or appropriate text if there are no to-dos.
-            console.log(`${command} executed.`);
-            // check file contains a To-Do:
-            fs.readFile(path, function(err, content) {
-                if (err) {
-                    throw err;
-                } else if (content.includes(td)) {
-                    console.log('Display to-dos: ');
-                    // command to display text.
-                } else console.log('No to-do\'s to display');
-            });
+            if (fs.existsSync(path)) {
+                let todoData = JSON.parse(fs.readFileSync(path));
+                console.log(todoData);
+            } else console.log('File does not exist yet, use "add" to create a to-do.');
             break;
         case 'add':
+                //console.log(process.argv.slice(3).join(' '));
+                let input = (process.argv.slice(3).join(' '));
+                fs.appendFileSync(path, input, function (err) {
+                    if (err) throw err;
+                });
             // adds a to-do item, all words behind add are entered as 1 item, for example:
             // node app.js add "Buy groceries"
-            td.push(process.argv.slice(3).join(' '));
-            console.log(`array of to-do's:
-            ${td}`);
-            fs.appendFile(path, td, function (err) {
-                if (err) throw err;
-                //console.log(`"${chunk}" has been added to ${path}`);
-            });
             //console.log(process.argv.slice(3).join(' '));
             break;
         case 'remove':
