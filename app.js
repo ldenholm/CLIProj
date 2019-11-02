@@ -1,9 +1,14 @@
 {
     const fs = require('fs');
-
     let command = process.argv[2];
     let path = __dirname + '/to-do-.json';
-    //console.log(td);
+    let currentList;
+
+    if (fs.existsSync(path)) {
+        currentList = JSON.parse(fs.readFileSync(path));
+    } else currentList = {
+        todo: []
+    };
 
     switch (command) {
         case 'help':
@@ -22,14 +27,9 @@
             } else console.log('File does not exist yet, use "add" to create a to-do.');
             break;
         case 'add':
-                //console.log(process.argv.slice(3).join(' '));
-                let input = (process.argv.slice(3).join(' '));
-                fs.appendFileSync(path, input, function (err) {
-                    if (err) throw err;
-                });
-            // adds a to-do item, all words behind add are entered as 1 item, for example:
-            // node app.js add "Buy groceries"
-            //console.log(process.argv.slice(3).join(' '));
+            let arg = process.argv.slice(3).join(' ');
+            currentList.todo.push(arg);
+            fs.writeFileSync(path, JSON.stringify(currentList));
             break;
         case 'remove':
             // removes a to-do item by it's 1-base index, to remove 2 execute:
