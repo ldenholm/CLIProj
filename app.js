@@ -3,6 +3,7 @@
     let command = process.argv[2];
     let path = __dirname + '/to-do-.json';
     let currentList;
+    let arg;
 
     if (fs.existsSync(path)) {
         currentList = JSON.parse(fs.readFileSync(path));
@@ -27,13 +28,16 @@
             } else console.log('File does not exist yet, use "add" to create a to-do.');
             break;
         case 'add':
-            let arg = process.argv.slice(3).join(' ');
+            arg = process.argv.slice(3).join(' ');
             currentList.todo.push(arg);
             fs.writeFileSync(path, JSON.stringify(currentList));
             break;
         case 'remove':
             // removes a to-do item by it's 1-base index, to remove 2 execute:
             // node app.js remove 2.
+            arg = process.argv[3] - 1;
+            currentList.todo.splice(arg, 1);
+            fs.writeFileSync(path, JSON.stringify(currentList));
             break;
         case 'reset':
             // shows to-dos, or appropriate text if there are no to-dos.
