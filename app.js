@@ -22,10 +22,14 @@
             reset <clears the to-do-list.txt>`);
             break;
         case 'list':
-            if (fs.existsSync(path)) {
-                let todoData = JSON.parse(fs.readFileSync(path));
-                console.log(todoData);
-            } else console.log('File does not exist yet, use "add" to create a to-do.');
+            if (currentList.todo.length === 0) {
+                console.log('There are no items in the to-do list.');
+            } else console.log(`The current items on the to-do list are
+            ${currentList.todo}`);
+            // if (fs.existsSync(path)) {
+            //     let todoData = JSON.parse(fs.readFileSync(path));
+            //     console.log(todoData);
+            // } else console.log('File does not exist yet, use "add" to create a to-do.');
             break;
         case 'add':
             arg = process.argv.slice(3).join(' ');
@@ -41,6 +45,8 @@
             break;
         case 'reset':
             // shows to-dos, or appropriate text if there are no to-dos.
+            currentList.todo = [];
+            fs.writeFileSync(path, JSON.stringify(currentList));
             break;
     }
 }
